@@ -1,0 +1,291 @@
+from time import sleep  # Bibliotecas
+from random import randint
+import sys
+# INTRODUÇÃO
+print('BEM-VINDO AO # JOGO DA VELHA #')
+print('\nFuncionamento do jogo!!!\n')
+print('''    
+Teclas para jogar!   
+          
+ 7  | 8  | 9
+____|____|____
+    |    |
+ 4  | 5  | 6
+____|____|____
+    |    |
+ 1  | 2  | 3
+          ''')
+print('Gannhe ao fazer uma linha na horizontal, vertical ou na diagonal.')
+
+pts_jogador = 0
+pts_pc = 0
+
+while True:
+
+    j = ''
+    first = ''
+    a1, a2, a3 = ' ', ' ', ' '
+    b1, b2, b3 = ' ', ' ', ' '
+    c1, c2, c3 = ' ', ' ', ' '
+    lv = ''
+    pa1, pa2, pa3 = lv, lv, lv
+    pb1, pb2, pb3 = lv, lv, lv
+    pc1, pc2, pc3 = lv, lv, lv
+    jogada = 0
+    jog_adv = 0
+    jogada_aleatoria = 0
+    turnos = 1
+    vencedor = ''
+
+    while j != 'O' and j != 'X':
+        j = str(input('Você quer ser o "X"  ou  "O" ? ')).upper()
+        if j != 'O' and j != 'X':
+            print('\nEscolha inválida!\n')
+
+    if j == 'O':
+        adv = 'X'
+        print('\nEntão você será O, e eu serei o X.')
+    elif j == 'X':
+        adv = 'O'
+        print('\nEntão você será X, e eu serei O.')
+
+    while first != 'EU' and first != 'PC':
+        instr = 'Digite "EU" se quiser ir por primeiro, se quiser que eu comece digite "PC" : '
+        first = str(input(instr)).upper()
+        if first != 'EU' and first != 'PC':
+            print('\nEscolha inválida!\n')
+
+    if first == 'EU':
+        print('\nEntão você joga primeiro.\n')
+        
+    elif first == 'PC':
+        print('\nEntão eu jogo primeiro.\n')
+
+    def atualizarTab():
+        global a1, a2, a3, b1, b2, b3, c1, c2, c3
+        tabuleiro = '''
+   
+ {}  | {}  | {}
+____|____|____
+    |    |
+ {}  | {}  | {}
+____|____|____
+    |    |
+ {}  | {}  | {}
+
+        '''.format(a1, a2, a3, b1, b2, b3, c1, c2, c3)
+        print(tabuleiro)
+
+    def jogada_j1():
+        global jogada
+
+        while True:
+            try:
+                jogada = int(input('Digite a posição da sua jogada 1 a 9: '))
+                break
+            except ValueError:
+                print('\nValor digitado inválido. Digite um número inteiro de 1 a 9!\n')
+
+    def rotina_j1():
+        global jogada
+        global pa1, pa2, pa3, pb1, pb2, pb3, pc1, pc2, pc3
+
+        ocupado = '\nEste espaço já está ocupado!\n'
+
+        jogada_j1()
+
+        while jogada not in range(1, (9 + 1)):
+            jogada_j1()
+
+            if jogada not in range(1, (9 + 1)):
+                print('\nNúmero inválido!\n')
+
+        while jogada == 7 and pa1 == 'ocupada' or \
+            jogada == 8 and pa2 == 'ocupada' or \
+            jogada == 9 and pa3 == 'ocupada' or \
+            jogada == 4 and pb1 == 'ocupada' or \
+            jogada == 5 and pb2 == 'ocupada' or \
+            jogada == 6 and pb3 == 'ocupada' or \
+            jogada == 1 and pc1 == 'ocupada' or \
+            jogada == 2 and pc2 == 'ocupada' or \
+            jogada == 3 and pc3 == 'ocupada':
+            print(ocupado)
+            rotina_j1()
+
+    def jogadas1():
+        global jogada
+        global a1, a2, a3, b1, b2, b3, c1, c2, c3
+        global pa1, pa2, pa3, pb1, pb2, pb3, pc1, pc2, pc3
+
+        if jogada == 7:
+            a1 = j
+            pa1 = 'ocupada'
+        elif jogada == 8:
+            a2 = j
+            pa2 = 'ocupada'
+        elif jogada == 9:
+            a3 = j
+            pa3 = 'ocupada'
+        elif jogada == 4:
+            b1 = j
+            pb1 = 'ocupada'
+        elif jogada == 5:
+            b2 = j
+            pb2 = 'ocupada'
+        elif jogada == 6:
+            b3 = j
+            pb3 = 'ocupada'
+        elif jogada == 1:
+            c1 = j
+            pc1 = 'ocupada'
+        elif jogada == 2:
+            c2 = j
+            pc2 = 'ocupada'
+        elif jogada == 3:
+            c3 = j
+            pc3 = 'ocupada'
+
+    def jogadas2():
+        global jogada, jogada_aleatoria, adv
+        global a1, a2, a3, b1, b2, b3, c1, c2, c3
+        global pa1, pa2, pa3, pb1, pb2, pb3, pc1, pc2, pc3
+
+        sleep(1.5)
+        jogada_aleatoria = randint(1, 9)
+
+        while jogada_aleatoria == 7 and pa1 == 'ocupada' or \
+            jogada_aleatoria == 8 and pa2 == 'ocupada' or \
+            jogada_aleatoria == 9 and pa3 == 'ocupada' or \
+            jogada_aleatoria == 4 and pb1 == 'ocupada' or \
+            jogada_aleatoria == 5 and pb2 == 'ocupada' or \
+            jogada_aleatoria == 6 and pb3 == 'ocupada' or \
+            jogada_aleatoria == 1 and pc1 == 'ocupada' or \
+            jogada_aleatoria == 2 and pc2 == 'ocupada' or \
+            jogada_aleatoria == 3 and pc3 == 'ocupada':
+            jogada_aleatoria = randint(1, 9)
+
+        print('\nEu jogo na posição {}!'.format(jogada_aleatoria))
+
+        if jogada_aleatoria == 7:
+            a1 = adv
+            pa1 = 'ocupada'
+        elif jogada_aleatoria == 8:
+            a2 = adv
+            pa2 = 'ocupada'
+        elif jogada_aleatoria == 9:
+            a3 = adv
+            pa3 = 'ocupada'
+        elif jogada_aleatoria == 4:
+            b1 = adv
+            pb1 = 'ocupada'
+        elif jogada_aleatoria == 5:
+            b2 = adv
+            pb2 = 'ocupada'
+        elif jogada_aleatoria == 6:
+            b3 = adv
+            pb3 = 'ocupada'
+        elif jogada_aleatoria == 1:
+            c1 = adv
+            pc1 = 'ocupada'
+        elif jogada_aleatoria == 2:
+            c2 = adv
+            pc2 = 'ocupada'
+        elif jogada_aleatoria == 3:
+            c3 = adv
+            pc3 = 'ocupada'
+
+    def checarVencedor():
+        global j, adv, turnos, vencedor, pts_jogador
+        global a1, a2, a3, b1, b2, b3, c1, c2, c3
+
+        if a1 == j and a2 == j and a3 == j or \
+           a1 == j and b1 == j and c1 == j or \
+           a1 == j and b2 == j and c3 == j or \
+           a2 == j and b2 == j and c2 == j or \
+           a3 == j and b2 == j and c1 == j or \
+           a3 == j and b3 == j and c3 == j or \
+           b1 == j and b2 == j and b3 == j or \
+           c1 == j and c2 == j and c3 == j:
+            print('VOCÊ GANHOU!!!\n')
+            pts_jogador += 1
+            vencedor = 'EU'
+            turnos = 10
+
+    def checarVencedorPC():
+        global j, adv, turnos, vencedor, pts_pc
+        global a1, a2, a3, b1, b2, b3, c1, c2, c3
+
+        if a1 == j and a2 == j and a3 == j or \
+           a1 == j and b1 == j and c1 == j or \
+           a1 == j and b2 == j and c3 == j or \
+           a2 == j and b2 == j and c2 == j or \
+           a3 == j and b2 == j and c1 == j or \
+           a3 == j and b3 == j and c3 == j or \
+           b1 == j and b2 == j and b3 == j or \
+           c1 == j and c2 == j and c3 == j:
+            print('VOCÊ GANHOU!!!\n')
+            pts_pc += 1
+            vencedor = 'EU'
+            turnos = 10
+
+
+    def atualizar_tudo():
+        global jogada
+        global turnos
+        global vencedor
+
+        if first == 'EU':
+            rotina_j1()
+            jogadas1()
+            atualizarTab()
+            checarVencedor()
+
+            if vencedor == '':
+                jogadas2()
+                atualizarTab()
+                checarVencedor()
+                checarVencedorPC()
+                
+            if turnos == 5:
+                print('NÓS EMPATAMOS!\n')
+                turnos = 10
+                vencedor = 'EMPATE'
+        elif first == 'PC':
+            jogadas2()
+            atualizarTab()
+            checarVencedorPC()
+
+            if turnos == 5:
+                print('NÓS EMPATAMOS!\n')
+                turnos = 10
+                vencedor = 'EMPATE'
+
+            if vencedor == '':
+                rotina_j1()
+                jogadas1()
+                atualizarTab()
+                checarVencedor()
+                checarVencedorPC()
+
+        jogada = 0
+        turnos += 1
+
+    while turnos <= 5:
+        atualizar_tudo()
+
+    print('PLACAR')
+    print('Você: {} | Computador: {}'.format(pts_jogador, pts_pc))
+
+
+    while True:
+        reiniciar = input('\nQuer jogar de novo? Digite S para sim ou N para não: ').lower()
+
+        if reiniciar in ('s', 'n', '"s"', '"n"'):
+            break
+        print('\nResposta inválida!')
+
+    if reiniciar == 's' or reiniciar == '"s"':
+        print('\n-----------------------------------------------------')
+        continue
+    else:
+        sys.exit(0)
